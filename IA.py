@@ -9,6 +9,7 @@ ultima_palavra_usada = ""
 letras_eliminadas = []
 letras_presentes = []
 letras_com_posicao_correta = []
+palavras_testadas = []
 
 palavras_possiveis = palavras.copy()
 
@@ -21,6 +22,7 @@ def fazer_tentativa(tentativa):
     global letras_eliminadas, letras_presentes, letras_com_posicao_correta
 
     if tentativa == 0:
+        palavras_testadas.append("aureo")
         return "aureo"
     else:
         for i, simbolo in enumerate(ultimo_resultado):
@@ -42,7 +44,11 @@ def fazer_tentativa(tentativa):
 
         if palavras_possiveis:
             print(palavras_possiveis)
-            return palavras_possiveis[0]
+            j = 0
+            while palavras_possiveis[j] in palavras_testadas:
+                j = j+1
+            palavras_testadas.append(palavras_possiveis[0])
+            return palavras_possiveis[j]
 
 def palavra_valida(palavra):
     for letra, i in letras_com_posicao_correta:
