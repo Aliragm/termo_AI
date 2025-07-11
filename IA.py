@@ -31,8 +31,8 @@ def fazer_tentativa(tentativa):
                 if letra not in letras_eliminadas:
                     letras_eliminadas.append(letra)
             elif simbolo == "?":
-                if letra not in letras_presentes:
-                    letras_presentes.append(letra)
+                if (letra, i) not in letras_presentes:
+                    letras_presentes.append((letra, i))
             elif simbolo == "!":
                 if (letra, i) not in letras_com_posicao_correta:
                     letras_com_posicao_correta.append((letra, i))
@@ -47,19 +47,20 @@ def fazer_tentativa(tentativa):
             j = 0
             while palavras_possiveis[j] in palavras_testadas:
                 j = j+1
-            palavras_testadas.append(palavras_possiveis[0])
+            palavras_testadas.append(palavras_possiveis[j])
             return palavras_possiveis[j]
 
 def palavra_valida(palavra):
-    for letra, i in letras_com_posicao_correta:
-        if palavra[i] != letra:
+    for letra, pos in letras_com_posicao_correta:
+        if palavra[pos] != letra:
             return False
-    for letra in letras_presentes:
-        if letra not in palavra:
+    for letra, pos_errada in letras_presentes:
+        if letra not in palavra or palavra[pos_errada] == letra:
             return False
     for letra in letras_eliminadas:
         if letra in palavra:
-            return False
+            if not any(l == letra for l, _ in letras_presentes + letras_com_posicao_correta):
+                return False
     return True
 
 def eliminar_palavras(redundancia=False):
