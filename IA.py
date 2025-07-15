@@ -77,3 +77,17 @@ def eliminar_palavras(redundancia=False):
         palavras_possiveis = list(set(palavras_possiveis) & set(nova_lista))
     else:
         palavras_possiveis = nova_lista
+
+        
+def resetar_estado():
+    global ultimo_resultado, ultima_palavra_usada
+    global letras_eliminadas, letras_presentes, letras_com_posicao_correta
+    global palavras_testadas, palavras_possiveis
+
+    ultimo_resultado = ""
+    ultima_palavra_usada = ""
+    letras_eliminadas = []
+    letras_presentes = []
+    letras_com_posicao_correta = []
+    palavras_testadas = []
+    palavras_possiveis = palavras.copy()

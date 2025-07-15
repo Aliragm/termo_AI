@@ -3,6 +3,8 @@ import palavra as pl
 import IA
 
 def jogo(ia=False):
+    if ia:
+        IA.resetar_estado()
     palavra = srt.sorteio()
     print(palavra)
     tentativas = 0
@@ -35,10 +37,18 @@ def jogo(ia=False):
         if palavra_user == palavra:
             acertou = True
             print(f"Ganhou! a palavra é {palavra}")
-            return
+            return True
         else:
             tentativas += 1
             print(f"tentativas restantes: {6-tentativas}")
     print(f"Perdeu! a palavra é {palavra}")
+    return False
 
-jogo(ia=True)
+score = 0
+for i in range(0,100):
+    if jogo(ia=True):
+        score = score + 1
+    else:
+        print(f"Palavra errada na tentiva {i}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+
+print(f"porcentagem de acerto = {score / 100}")
