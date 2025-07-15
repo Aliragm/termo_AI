@@ -44,9 +44,11 @@ def fazer_tentativa(tentativa):
 
         if palavras_possiveis:
             print(palavras_possiveis)
-            melhor = melhor_palavra_por_frequencia([p for p in palavras_possiveis if p not in palavras_testadas])
-            palavras_testadas.append(melhor)
-            return melhor
+            j = 0
+            while palavras_possiveis[j] in palavras_testadas:
+                j = j+1
+            palavras_testadas.append(palavras_possiveis[j])
+            return palavras_possiveis[j]
 
 def palavra_valida(palavra):
     for letra, pos in letras_com_posicao_correta:
