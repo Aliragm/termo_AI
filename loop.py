@@ -1,10 +1,10 @@
 import sorteio as srt
 import palavra as pl
-import IA
+import IAH
 
 def jogo(ia=False):
     if ia:
-        IA.resetar_estado()
+        IAH.resetar_estado()
     palavra = srt.sorteio()
     print(palavra)
     tentativas = 0
@@ -18,7 +18,7 @@ def jogo(ia=False):
         if ia == False:
             palavra_user = pl.receber_palavra()
         elif ia == True:
-           palavra_user = pl.receber_palavra(IA.fazer_tentativa(tentativa=tentativas))
+           palavra_user = pl.receber_palavra(IAH.fazer_tentativa(tentativa=tentativas))
         resultado = ""
 
         print(f"a palavra escrita foi: {palavra_user}")
@@ -31,7 +31,7 @@ def jogo(ia=False):
                 resultado += "#"
         
         if ia == True:
-            IA.captar_resultado(resultado=resultado, palavra=palavra_user)
+            IAH.captar_resultado(resultado=resultado, palavra=palavra_user)
 
         print(resultado)
         if palavra_user == palavra:
