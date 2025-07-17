@@ -1,62 +1,102 @@
 # Termo AI Solver
 
-Este é um projeto de uma Inteligência Artificial desenvolvida em Python para resolver o jogo **Termo**. A IA utiliza uma abordagem heurística para maximizar suas chances de acertar a palavra secreta em menos de 6 tentativas.
+Este é um projeto de uma Inteligência Artificial desenvolvida em Python para resolver o jogo **Termo** (semelhante ao Wordle). A IA utiliza estratégias baseadas em **busca com heurística** para maximizar as chances de acertar a palavra secreta em menos de 6 tentativas.
 
-## - Funcionalidades Principais
+---
 
-* **Resolvedor Automático**: A IA joga o jogo de forma autônoma, fazendo escolhas inteligentes a cada rodada.
-* **Decisão Baseada em Heurística**: Utiliza uma heurística de frequência de letras para escolher a palavra que provavelmente fornecerá mais informações, reduzindo drasticamente o número de possibilidades. Pode também utilizar o método guloso, para tentar acertar as palavras diretamente.
-* **Análise de Desempenho**: O script `loop.py` executa uma simulação (por padrão, 100 jogos) e calcula a taxa de acerto da IA, permitindo avaliar a eficácia do algoritmo.
-* **Código Modular**: O projeto é organizado em módulos com responsabilidades claras (lógica da IA, sorteio de palavras, laço do jogo).
+## ✅ Objetivos e Aplicações do Modelo e Dataset
 
-## - Como a IA Funciona?
+**Objetivo do modelo:**  
+Desenvolver um agente inteligente capaz de jogar o jogo Termo de forma autônoma, utilizando estratégias que minimizem o número de tentativas.
 
-A IA implementa um **algoritmo de busca com poda e uma heurística inteligente** para tomar suas decisões. O processo a cada rodada é o seguinte:
+**Aplicações:**  
+- Desenvolvimento de algoritmos de IA aplicados a jogos de palavras.  
+- Demonstração prática de heurísticas e poda em problemas combinatórios.  
+- Ferramenta para analisar estratégias ótimas em jogos com espaço de busca limitado.
 
-1.  **Primeira Tentativa**: A IA começa com uma palavra inicial otimizada (como "áureo"), que contém letras comuns e vogais para maximizar a chance de obter dicas logo de cara.
+**Dataset:**  
+- O agente utiliza os arquivos `palavras_comuns.txt` e `palavras_5letras.txt`, contendo listas de palavras válidas em português.  
+- Esses datasets são usados tanto para sortear a palavra secreta quanto para gerar a lista de candidatos que a IA utilizará durante o jogo.
 
-2.  **Poda do Espaço de Busca**: Após cada tentativa, a IA recebe o feedback do jogo:
-    * `!` (letra certa no lugar certo)
-    * `?` (letra certa no lugar errado)
-    * `#` (letra não existe na palavra)
+---
 
-    Com base nesse feedback, ela filtra sua lista de várias de palavras (`palavras_possiveis`), **eliminando todas aquelas que não se encaixam mais nas dicas obtidas**. Esse processo é chamado de **poda**.
+## ✅ Algoritmos Utilizados
 
-3.  **Escolha Heurística**: Com a lista de palavras possíveis já reduzida, a IA precisa decidir qual será a próxima jogada. Em vez de simplesmente chutar a primeira palavra da lista, ela aplica uma **heurística de frequência de letras**:
-    * Ela analisa todas as palavras que ainda são candidatas a resposta e calcula a frequência de cada letra do alfabeto dentro dessa lista.
-    * Em seguida, ela pontua palavras (candidatas ao chute) com base nas letras que elas contêm. Palavras com letras de alta frequência recebem uma pontuação maior.
-    * A palavra com a maior pontuação é escolhida como a próxima tentativa. Essa abordagem garante que o chute tenha a maior probabilidade de revelar novas informações e reduzir ao máximo a lista de possibilidades para a rodada seguinte.
+- **Busca com Poda:**  
+  Após cada tentativa, a IA filtra a lista de palavras com base no feedback (`!`, `?`, `#`), eliminando palavras incompatíveis.
 
-## - Como Usar
+- **Heurística de Frequência de Letras:**  
+  A IA calcula a frequência das letras nas palavras candidatas restantes e seleciona a palavra com maior pontuação para a próxima tentativa.
 
-Para executar a simulação e ver a IA em ação, siga os passos abaixo.
+- **Método Guloso (Greedy):**  
+  Alternativa à heurística, tenta acertar diretamente uma das palavras restantes com base nas dicas.
 
-1.  **Clone o repositório:**
-    ```bash
-    git clone [https://github.com/Aliragm/termo_AI.git](https://github.com/Aliragm/termo_AI.git)
-    ```
+---
 
-2.  **Navegue até o diretório:**
-    ```bash
-    cd termo_AI
-    ```
+## ✅ Modelagem PEAS
 
-3.  **Prepare o dicionário:**
-    Certifique-se de que o arquivo `palavras_comuns.txt` ou `palavras_5letras.txt` está no mesmo diretório. Ele deve conter uma lista de palavras de 5 letras válidas em português, uma por linha.
+- **P (Performance):** Taxa de acerto, número médio de tentativas.  
+- **E (Environment):** Jogo Termo, com conjunto fixo de palavras e feedback por tentativa.  
+- **A (Actuators):** Envio de palavras como tentativas.  
+- **S (Sensors):** Feedback recebido após cada tentativa (!, ?, #).
 
-4.  **Execute a simulação:**
-    ```bash
-    python loop.py
-    ```
+---
 
-O script executará 100 jogos com a IA e, ao final, imprimirá a taxa de acertos e outras informações sobre o desempenho.
+## ✅ Arquitetura do Agente
 
-## - Estrutura do Projeto
+- **Tipo de Agente:** Agente orientado a objetivos com busca heurística.
 
-* **`loop.py`**: O arquivo principal que executa o laço do jogo. Ele controla as rodadas, chama a IA para fazer uma jogada e calcula as estatísticas de vitória no final.
-* **`IA.py`**: O cérebro do projeto. Contém toda a lógica de decisão da IA, incluindo a implementação da poda e decisão gulosa (greedy) de escolha de palavras.
-* **`IAH.py`**: Mesma coisa, porém, com heurística implementada, ao invés do método guloso.
-* **`sorteio.py`**: Utilitário responsável por sortear a palavra secreta do arquivo `palavras_comuns.txt` e por verificar se uma palavra existe no dicionário.
-* **`palavra.py`**: Gerencia a entrada de palavras e sua normalização (como a remoção de acentos).
-* **`palavras_comuns.txt`**: O dicionário de palavras utilizado tanto para sortear a palavra secreta quanto para a IA consultar as palavras possíveis.
-* **`palavras_5letras.txt`**: Mesma coisa, porém com muito mais instâncias e palavras quase nunca utilizadas. Muito maior que o comum.
+- **Componentes:**
+  - **Base de Conhecimento:** Lista de palavras possíveis.
+  - **Módulo de Percepção:** Interpreta o feedback do jogo.
+  - **Módulo de Decisão:** Escolhe a próxima palavra com base em heurística ou estratégia gulosa.
+  - **Executor:** Envia a palavra e coleta o feedback.
+
+---
+
+## ✅ Métricas de Avaliação, Desempenho e Validação
+
+- **Taxa de acerto:** Percentual de jogos vencidos em até 6 tentativas.  
+- **Número médio de tentativas:** Média das tentativas por jogo.  
+- **Validação:** Executada com o script `loop.py`, que realiza 100 simulações automáticas e calcula estatísticas de desempenho.
+
+---
+
+## ✅ Limitações e Dificuldades
+
+- **Dependência do dataset:** A IA não pode acertar palavras ausentes no dicionário.  
+- **Falta de contexto linguístico:** A estratégia é puramente estatística.  
+- **Complexidade com grandes volumes:** Dicionários maiores impactam o desempenho de execução.
+
+---
+
+## ✅ Limitações da Arquitetura
+
+- **Não adaptativa:** O agente não aprende com erros passados.  
+- **Heurística simples:** Baseada apenas na frequência de letras, sem análise semântica ou fonológica.
+
+---
+
+## ✅ Sugestões de Melhorias
+
+- Aplicar **aprendizado de máquina supervisionado** ou **reforçado**.  
+- Usar **modelos probabilísticos** para refinar a escolha de palavras.  
+- Melhorar a performance com **estruturas de dados otimizadas**.  
+- Criar uma **interface gráfica** para visualização do processo da IA.
+
+---
+
+## ✅ Como Usar
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/Aliragm/termo_AI.git
+   cd termo_AI
+
+2. Prepare o dicionário:
+Certifique-se de que palavras_comuns.txt ou palavras_5letras.txt está no mesmo diretório.
+
+3. Execute a simulação:
+
+```bash
+   python loop.py
